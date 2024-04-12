@@ -20,7 +20,7 @@ from argparse import Namespace
 from pprint import pprint
 from functools import partial
 import json
-
+from tqdm import tqdm
 import torch
 
 # import numpy  # for gradio hot reload
@@ -29,6 +29,7 @@ import gradio as gr
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, AutoModelForCausalLM, LogitsProcessorList
 
 from extended_watermark_processor import WatermarkLogitsProcessor, WatermarkDetector
+from c4_news import getNewsArticles
 
 
 def str2bool(v):
@@ -704,7 +705,7 @@ def main(args):
     and optionally launch and serve the gradio demo"""
     # Initial arg processing and log
     args.normalizers = args.normalizers.split(",") if args.normalizers else []
-    print(args)
+    # print(args)
 
     if not args.skip_model_load:
         model, tokenizer, device = load_model(args)
@@ -713,79 +714,49 @@ def main(args):
 
     # Generate and detect, report to stdout
     if not args.skip_model_load:
+        news = getNewsArticles("allenai/c4", "realnewslike", args.model_name_or_path, 3)
         # input_text = (
-        #     "The diamondback terrapin or simply terrapin (Malaclemys terrapin) is a "
-        #     "species of turtle native to the brackish coastal tidal marshes of the "
-        #     "Northeastern and southern United States, and in Bermuda.[6] It belongs "
-        #     "to the monotypic genus Malaclemys. It has one of the largest ranges of "
-        #     "all turtles in North America, stretching as far south as the Florida Keys "
-        #     "and as far north as Cape Cod.[7] The name 'terrapin' is derived from the "
-        #     "Algonquian word torope.[8] It applies to Malaclemys terrapin in both "
-        #     "British English and American English. The name originally was used by "
-        #     "early European settlers in North America to describe these brackish-water "
-        #     "turtles that inhabited neither freshwater habitats nor the sea. It retains "
-        #     "this primary meaning in American English.[8] In British English, however, "
-        #     "other semi-aquatic turtle species, such as the red-eared slider, might "
-        #     "also be called terrapins. The common name refers to the diamond pattern "
-        #     "on top of its shell (carapace), but the overall pattern and coloration "
-        #     "vary greatly. The shell is usually wider at the back than in the front, "
-        #     "and from above it appears wedge-shaped. The shell coloring can vary "
-        #     "from brown to grey, and its body color can be grey, brown, yellow, "
-        #     "or white. All have a unique pattern of wiggly, black markings or spots "
-        #     "on their body and head. The diamondback terrapin has large webbed "
-        #     "feet.[9] The species is"
+        #     "Linkin Park is an American rock band from Agoura Hills, California. The band's lineup "
+        #     "consists of vocalist/rhythm guitarist/keyboardist Mike Shinoda, lead guitarist Brad Delson, "
+        #     "bassist Dave Farrell, DJ/turntablist Joe Hahn, and drummer Rob Bourdon, with vocalist Chester "
+        #     "Bennington also part of the band until his death in 2017. Categorized as alternative rock, "
+        #     "Linkin Park's earlier music spanned a fusion of heavy metal and hip hop, while their later "
+        #     "music features more electronica and pop elements."
+        #     "Formed in 1996, Linkin Park rose to international fame with their debut studio album, "
+        #     "Hybrid Theory(2000), which became certified Diamond by the Recording Industry Association of "
+        #     "America (RIAA). Released during the peak of the nu metal scene, the album's singles' heavy "
+        #     'airplay on MTV led the singles "One Step Closer", "Crawling", and "In the End" all to chart '
+        #     "highly on the US Mainstream Rock chart. The lattermost also crossed over to the #2 spot on the "
+        #     "nation's Billboard Hot 100.[1]Their second album, Meteora (2003), continued the band's success. "
+        #     "The band explored experimental sounds on their third album, Minutes to Midnight (2007). By the end "
+        #     "of the decade, Linkin Park was among the most successful and popular rock acts."
+        #     "The band continued to explore a wider variation of musical types on their fourth album, "
+        #     "A Thousand Suns (2010), layering their music with more electronic sounds. The band's fifth "
+        #     "album, Living Things(2012), combined musical elements from all of their previous records. "
+        #     "Their sixth album, The Hunting Party (2014), returned to a heavier rock sound, while their "
+        #     "seventh album, "
         # )
 
-        input_text = (
-            "Linkin Park is an American rock band from Agoura Hills, California. The band's lineup "
-            "consists of vocalist/rhythm guitarist/keyboardist Mike Shinoda, lead guitarist Brad Delson, "
-            "bassist Dave Farrell, DJ/turntablist Joe Hahn, and drummer Rob Bourdon, with vocalist Chester "
-            "Bennington also part of the band until his death in 2017. Categorized as alternative rock, "
-            "Linkin Park's earlier music spanned a fusion of heavy metal and hip hop, while their later "
-            "music features more electronica and pop elements."
-            "Formed in 1996, Linkin Park rose to international fame with their debut studio album, "
-            "Hybrid Theory(2000), which became certified Diamond by the Recording Industry Association of "
-            "America (RIAA). Released during the peak of the nu metal scene, the album's singles' heavy "
-            'airplay on MTV led the singles "One Step Closer", "Crawling", and "In the End" all to chart '
-            "highly on the US Mainstream Rock chart. The lattermost also crossed over to the #2 spot on the "
-            "nation's Billboard Hot 100.[1]Their second album, Meteora (2003), continued the band's success. "
-            "The band explored experimental sounds on their third album, Minutes to Midnight (2007). By the end "
-            "of the decade, Linkin Park was among the most successful and popular rock acts."
-            "The band continued to explore a wider variation of musical types on their fourth album, "
-            "A Thousand Suns (2010), layering their music with more electronic sounds. The band's fifth "
-            "album, Living Things(2012), combined musical elements from all of their previous records. "
-            "Their sixth album, The Hunting Party (2014), returned to a heavier rock sound, while their "
-            "seventh album, "
-        )
+        for item in tqdm(news):
+            input_text = item["text"]
+            args.default_prompt = input_text
+            _, _, decoded_output_without_watermark, decoded_output_with_watermark, _ = generate(
+                input_text, args, model=model, device=device, tokenizer=tokenizer
+            )
+            without_watermark_detection_result = detect(decoded_output_without_watermark, args, device=device, tokenizer=tokenizer)
+            with_watermark_detection_result = detect(decoded_output_with_watermark, args, device=device, tokenizer=tokenizer)
 
-        args.default_prompt = input_text
-        term_width = 80
-        _, _, decoded_output_without_watermark, decoded_output_with_watermark, _ = generate(
-            input_text, args, model=model, device=device, tokenizer=tokenizer
-        )
-        without_watermark_detection_result = detect(decoded_output_without_watermark, args, device=device, tokenizer=tokenizer)
-        with_watermark_detection_result = detect(decoded_output_with_watermark, args, device=device, tokenizer=tokenizer)
-
-        paraphrased = 'In 2015, the band showcased a lighter, more reflective sound in their fourth album, "Death on the Fly," elevating their experimental elements to new heights. This album marked their third commercially successful release, surpassing the success of their previous albums. Following this, their sixth album, "Revolver," continued their streak of commercial success. In 2010, with the release of their fifth studio album, "Live at The Apollo," the band achieved their highest sales figures as a group, becoming the first rock act since the 2000s to sell double platinum albums. This album also topped the US Billboard 200, selling 818,000 copies. Three years later, after completing the albums "The Hunting Party," "Living Things," and "A Thousand Suns," Linkin Park formed the band Lyrics and released their first studio album, "Distance," followed by "Live at The Apollo." The band made appearances in the movie "A Wrinkle in Time" and in the TV series "The Twilight Zone," with their album becoming the first since 2000 to chart on the US Billboard 200. In November 2016, Linkin Park announced "Live at The Apollo" as their final album. As a tribute, they revealed "A Thousand Suns" would be their last release. Their last album marked their first studio album since 2000 to chart on the US Billboard 200, and they were the first rock act since the 2000s to achieve double platinum album sales. Following the departure of their last two members in 2007, the band released the single "Death in the Air" in 2008, which attained Diamond certification from the RIAA in 2009 and received a Grammy nomination for Best New Artist in 2008. Many have hailed the band as the "greatest rock act in the world."'
-        test = detect(paraphrased, args, device=device, tokenizer=tokenizer)
-
-        results = dict()
-        results["prompt"] = input_text
-        results["with_wm_text"] = decoded_output_with_watermark
-        results["with_wm_scores"] = str(with_watermark_detection_result)
-        results["without_wm_text"] = decoded_output_without_watermark
-        results["without_wm_scores"] = str(without_watermark_detection_result)
-        results["paraphrased"] = paraphrased
-        results["paraphrased_scores"] = str(test)
+            item["with_wm_scores"] = str(with_watermark_detection_result)
+            item["without_wm_scores"] = str(without_watermark_detection_result)
 
         with open("result.json", "w") as fp:
-            json.dump(results, fp)
+            json.dump(news, fp)
 
-    # Launch the app to generate and detect interactively (implements the hf space demo)
-    if args.run_gradio:
-        run_gradio(args, model=model, tokenizer=tokenizer, device=device)
+        # Launch the app to generate and detect interactively (implements the hf space demo)
+        if args.run_gradio:
+            run_gradio(args, model=model, tokenizer=tokenizer, device=device)
 
-    return
+        return
 
 
 if __name__ == "__main__":

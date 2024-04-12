@@ -1,0 +1,80 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.9.13",
+    "heartbeatAt": "2024-04-11T22:40:07.434028",
+    "startedAt": "2024-04-11T22:40:07.314437",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--model_name",
+        "facebook/opt-350m",
+        "--dataset_name",
+        "c4",
+        "--dataset_config_name",
+        "realnewslike",
+        "--max_new_tokens",
+        "200",
+        "--min_prompt_tokens",
+        "50",
+        "--limit_indices",
+        "500",
+        "--input_truncation_strategy",
+        "completion_length",
+        "--input_filtering_strategy",
+        "prompt_and_completion_length",
+        "--output_filtering_strategy",
+        "max_new_tokens",
+        "--dynamic_seed",
+        "markov_1",
+        "--bl_proportion",
+        "0.5",
+        "--bl_logit_bias",
+        "2.0",
+        "--bl_type",
+        "soft",
+        "--store_spike_ents",
+        "True",
+        "--num_beams",
+        "1",
+        "--use_sampling",
+        "True",
+        "--sampling_temp",
+        "0.7"
+    ],
+    "state": "running",
+    "program": "/Users/u1471908/Projects/llm-watermarking/experiments/run_watermarking.py",
+    "codePathLocal": "run_watermarking.py",
+    "codePath": "experiments/run_watermarking.py",
+    "git": {
+        "remote": "https://github.com/Sharath04Satish/llm-watermarking.git",
+        "commit": "8336952da52f0046ce29292bf8aa1baaa56a26de"
+    },
+    "email": "sharaths1998@gmail.com",
+    "root": "/Users/u1471908/Projects/llm-watermarking",
+    "host": "MLIB-KC-STU-LAP-FVFD38HXP3XY",
+    "username": "u1471908",
+    "executable": "/Users/u1471908/anaconda/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 1400,
+        "min": 1400,
+        "max": 1400
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1400,
+            "min": 1400,
+            "max": 1400
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 233.46913528442383,
+            "used": 138.0665512084961
+        }
+    },
+    "memory": {
+        "total": 8.0
+    }
+}

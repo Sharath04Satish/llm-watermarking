@@ -32,7 +32,7 @@ Here is an example of the argument set required to implement a single (represent
 
 ```
 python run_watermarking.py \
-    --model_name facebook/opt-1.3b \
+    --model_name facebook/opt-350m \
     --dataset_name c4 \
     --dataset_config_name realnewslike \
     --max_new_tokens 200 \
@@ -49,7 +49,7 @@ python run_watermarking.py \
     --num_beams 1 \
     --use_sampling True \
     --sampling_temp 0.7
-    --oracle_model_name facebook/opt-2.7b \
+    --oracle_model_name facebook/opt-350m \
     --run_name example_run \
     --output_dir ./all_runs \
 ```
