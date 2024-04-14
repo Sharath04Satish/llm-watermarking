@@ -21,7 +21,7 @@ args = Namespace()
 arg_dict = {
     "run_gradio": False,
     "demo_public": False,
-    "model_name_or_path": "facebook/opt-350m",
+    "model_name_or_path": "facebook/opt-125m",
     # "model_name_or_path": "facebook/opt-1.3b",
     # 'model_name_or_path': 'facebook/opt-2.7b',
     # 'model_name_or_path': 'facebook/opt-6.7b',
@@ -44,6 +44,8 @@ arg_dict = {
     "select_green_tokens": True,
     "skip_model_load": False,
     "seed_separately": True,
+    "cp_attack": False,
+    "llm_attack": True,
 }
 
 args.__dict__.update(arg_dict)

@@ -1,0 +1,34 @@
+[
+  {
+    "num_instances": 1.0,
+    "ratio_wm_text": 10.0,
+    "roc_auc_score": 0.9075000000000001,
+    "avg_T": 960.8,
+    "min_T": 43.0,
+    "max_T": 2311.0
+  },
+  {
+    "num_instances": 1.0,
+    "ratio_wm_text": 25.0,
+    "roc_auc_score": 0.8500000000000001,
+    "avg_T": 971.45,
+    "min_T": 16.0,
+    "max_T": 2637.0
+  },
+  {
+    "num_instances": 3.0,
+    "ratio_wm_text": 10.0,
+    "roc_auc_score": 0.835,
+    "avg_T": 964.6,
+    "min_T": 68.0,
+    "max_T": 2372.0
+  },
+  {
+    "num_instances": 3.0,
+    "ratio_wm_text": 25.0,
+    "roc_auc_score": 0.76,
+    "avg_T": 1051.25,
+    "min_T": 95.0,
+    "max_T": 2534.0
+  }
+]
