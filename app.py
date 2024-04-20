@@ -29,7 +29,7 @@ arg_dict = {
     # 'load_fp16' : True,
     "load_fp16": False,
     "prompt_max_length": None,
-    "max_new_tokens": 600,
+    "max_new_tokens": 500,
     "generation_seed": 123,
     "use_sampling": True,
     "n_beams": 1,
@@ -44,8 +44,9 @@ arg_dict = {
     "select_green_tokens": True,
     "skip_model_load": False,
     "seed_separately": True,
-    "cp_attack": False,
-    "llm_attack": True,
+    "cp_attack": True,
+    "llm_attack": False,
+    "elifive": False,
 }
 
 args.__dict__.update(arg_dict)

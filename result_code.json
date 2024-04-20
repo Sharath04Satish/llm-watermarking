@@ -1,0 +1,35 @@
+[
+  {
+    "text": "In Python, calculate how much time I spend on my phone per week!",
+    "wm_text": "\nI have a phone, and I'm doing that. Fucking hell.",
+    "len_wm_text": 50,
+    "without_wm_scores": 0.577,
+    "no_wm_text": "\nI've been doing this for a while. It's sooooooo annoying.",
+    "len_no_wm_text": 58,
+    "with_wm_scores": 4.92,
+    "ppl_score_wm": 25.97,
+    "ppl_score_no_wm": 10.31
+  },
+  {
+    "text": "In Python, calculate my coffee consumption",
+    "wm_text": "\nI have a friend who runs a company called \"estimating coffee consumption\" and he does this on purpose. He personally does this on accident, and I do too, but I usually just watch him for a few hours just in case.\nI'm pretty much the same way, except I'm doing things based on the assumption that I'm getting a coffee from him in the morning. I never do it but I do it when I'm bored out of my mind and I'm just going to grab my coffee cup or something and finish it off.",
+    "len_wm_text": 471,
+    "without_wm_scores": -0.854,
+    "no_wm_text": " (I usually drink about 20 gallons a day) and have it recorded every time. I have been using this for the last few years.\nI'll have to try this. Thanks!",
+    "len_no_wm_text": 152,
+    "with_wm_scores": 8.82,
+    "ppl_score_wm": 16.36,
+    "ppl_score_no_wm": 13.14
+  },
+  {
+    "text": "Push changes to a GitHub repository",
+    "wm_text": " to get out of the \"I have no idea who you are\" mindset.  Take some common sense into consideration to get the project up and running.\nThank you so much for your advice and I appreciate your explanation",
+    "len_wm_text": 202,
+    "without_wm_scores": -1.02,
+    "no_wm_text": " are easy. It's just you and your friend who have to do the work.\nI'm a huge fan of pushing. It's not like I'm the first to do it. I just feel like it'd be nice to see that the community is pretty open about it.\nI think GitHub would love push. It's not like it's hard to do. It's just a bit more complicated.\nI agree. It is really easy to do.",
+    "len_no_wm_text": 342,
+    "with_wm_scores": 5.37,
+    "ppl_score_wm": 14.96,
+    "ppl_score_no_wm": 11.54
+  }
+]
